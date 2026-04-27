@@ -5,7 +5,7 @@ import com.capg.hotel.dtos.HotelAmenityId;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "hotelamenity")
+@Table(name = "HotelAmenity")
 public class HotelAmenity {
 
     @EmbeddedId

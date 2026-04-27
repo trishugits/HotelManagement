@@ -6,7 +6,7 @@ import com.capg.hotel.dtos.RoomAmenityId;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "roomamenity")
+@Table(name = "RoomAmenity")
 public class RoomAmenity {
 
     @EmbeddedId

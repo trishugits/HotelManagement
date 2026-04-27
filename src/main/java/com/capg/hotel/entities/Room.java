@@ -3,7 +3,7 @@ package com.capg.hotel.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "room")
+@Table(name = "Room")
 public class Room {
 
     @Id
