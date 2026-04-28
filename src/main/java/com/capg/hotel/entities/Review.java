@@ -22,7 +22,7 @@ public class Review {
     @Column(name = "review_date")
     private LocalDate reviewDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "reservation_id")
     @JsonIgnoreProperties({"reviews", "hibernateLazyInitializer", "handler"})
     private Reservation reservation;
