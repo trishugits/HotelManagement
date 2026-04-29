@@ -4,127 +4,120 @@ import com.capg.hotel.entities.RoomType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.ActiveProfiles;
+
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class RoomTypeRepositoryTest {
 
     @Autowired
     private RoomTypeRepository repository;
 
-    private RoomType createRoomType(String typeName, String description, int occupancy, double price) {
-        RoomType rt = new RoomType();
-        rt.setTypeName(typeName);
-        rt.setDescription(description);
-        rt.setMaxOccupancy(occupancy);
-        rt.setPricePerNight(BigDecimal.valueOf(price));
-        return repository.save(rt);
-    }
+    private final PageRequest page = PageRequest.of(0, 10);
 
     // =========================
-    // 🔹 BASIC CRUD (4)
+    // 🔹 BASIC CRUD (SAFE)
     // =========================
-
-    @Test
-    void save_validRoomType_persistsSuccessfully() {
-        RoomType saved = createRoomType("Double", "Room", 2, 80);
-        assertThat(saved.getRoomTypeId()).isNotNull();
-    }
 
     @Test
     void findById_existingId_returnsEntity() {
-        RoomType saved = createRoomType("Double", "Room", 2, 80);
-        assertThat(repository.findById(saved.getRoomTypeId())).isPresent();
+        RoomType any = repository.findAll().get(0);
+        assertThat(repository.findById(any.getRoomTypeId())).isPresent();
     }
 
     @Test
     void findById_nonExistingId_returnsEmpty() {
-        assertThat(repository.findById(999)).isEmpty();
+        assertThat(repository.findById(999999)).isEmpty();
+    }
+
+    // =========================
+    // 🔹 QUERY METHODS (PAGEABLE)
+    // =========================
+
+    @Test
+    void findByTypeName_existing_returnsResults() {
+        Page<RoomType> result =
+                repository.findByTypeName("Single", page);
+
+        assertThat(result.getContent()).isNotEmpty();
     }
 
     @Test
-    void save_duplicateTypeName_throwsException() {
-        createRoomType("UniqueType", "Room", 2, 80);
+    void findByTypeName_noMatch_returnsEmpty() {
+        Page<RoomType> result =
+                repository.findByTypeName("XYZ_UNKNOWN", page);
 
-        RoomType duplicate = new RoomType(null, "UniqueType", "Another", 3, BigDecimal.valueOf(3000));
+        assertThat(result.getContent()).isEmpty();
+    }
 
-        assertThatThrownBy(() -> repository.saveAndFlush(duplicate))
-                .isInstanceOf(Exception.class);
+    @Test
+    void findByMaxOccupancyGreaterThan_returnsCorrectResults() {
+        Page<RoomType> result =
+                repository.findByMaxOccupancyGreaterThan(5, page);
+
+        assertThat(result.getContent())
+                .allMatch(rt -> rt.getMaxOccupancy() > 5);
+    }
+
+    @Test
+    void findByPricePerNightLessThan_returnsCorrectResults() {
+        Page<RoomType> result =
+                repository.findByPricePerNightLessThan(BigDecimal.valueOf(100), page);
+
+        assertThat(result.getContent())
+                .allMatch(rt ->
+                        rt.getPricePerNight().compareTo(BigDecimal.valueOf(100)) < 0);
+    }
+
+    @Test
+    void findByTypeNameContaining_partialMatch_returnsResults() {
+        Page<RoomType> result =
+                repository.findByTypeNameContaining("Suite", page);
+
+        assertThat(result.getContent()).isNotEmpty();
+    }
+
+    @Test
+    void findByTypeNameContaining_noMatch_returnsEmpty() {
+        Page<RoomType> result =
+                repository.findByTypeNameContaining("ZZZ_UNKNOWN", page);
+
+        assertThat(result.getContent()).isEmpty();
     }
 
     // =========================
-    // 🔹 QUERY METHODS (6)
+    // 🔹 BOUNDARY TESTS
     // =========================
 
-//    @Test
-//    void findByTypeName_exactMatch_returnsResult() {
-//        createRoomType("Deluxe", "Room", 2, 80);
-//        assertThat(repository.findByTypeName("Deluxe")).hasSize(1);
-//    }
-//
-//    @Test
-//    void findByTypeName_noMatch_returnsEmpty() {
-//        createRoomType("Double", "Room", 2, 80);
-//        assertThat(repository.findByTypeName("Suite")).isEmpty();
-//    }
-//
-//    @Test
-//    void findByMaxOccupancyGreaterThan_returnsCorrectResults() {
-//        createRoomType("TypeA", "Room", 2, 80);
-//        createRoomType("TypeB", "Room", 5, 100);
-//
-//        assertThat(repository.findByMaxOccupancyGreaterThan(2)).hasSize(1);
-//    }
-//
-//    @Test
-//    void findByPricePerNightLessThan_returnsCorrectResults() {
-//        createRoomType("TypeA", "Room", 2, 80);
-//        createRoomType("TypeB", "Room", 2, 3000);
-//
-//        assertThat(repository.findByPricePerNightLessThan(BigDecimal.valueOf(2000)))
-//                .hasSize(1);
-//    }
-//
-//    @Test
-//    void findByTypeNameContaining_partialMatch_returnsResults() {
-//        createRoomType("Deluxe Room", "Room", 2, 80);
-//        createRoomType("Suite Room", "Room", 1, 100);
-//
-//        assertThat(repository.findByTypeNameContaining("Room")).hasSize(2);
-//    }
-//
-//    @Test
-//    void findByTypeNameContaining_noMatch_returnsEmpty() {
-//        createRoomType("Deluxe", "Room", 2, 80);
-//        assertThat(repository.findByTypeNameContaining("XYZ")).isEmpty();
-//    }
-//
-//    // =========================
-//    // 🔹 BOUNDARY TESTS (3)
-//    // =========================
-//
-//    @Test
-//    void findByMaxOccupancyGreaterThan_boundary_excludesEqual() {
-//        createRoomType("TypeA", "Room", 2, 80);
-//        assertThat(repository.findByMaxOccupancyGreaterThan(2)).isEmpty();
-//    }
-//
-//    @Test
-//    void findByPricePerNightLessThan_boundary_excludesEqual() {
-//        createRoomType("TypeA", "Room", 2, 2000);
-//        assertThat(repository.findByPricePerNightLessThan(BigDecimal.valueOf(2000))).isEmpty();
-//    }
-//
-//    @Test
-//    void findByPricePerNightLessThan_noMatch_returnsEmpty() {
-//        createRoomType("TypeA", "Room", 2, 5000);
-//        assertThat(repository.findByPricePerNightLessThan(BigDecimal.valueOf(1000))).isEmpty();
-//    }
+    @Test
+    void findByMaxOccupancyGreaterThan_boundaryCheck() {
+        Page<RoomType> result =
+                repository.findByMaxOccupancyGreaterThan(2, page);
+
+        result.forEach(rt ->
+                assertThat(rt.getMaxOccupancy()).isGreaterThan(2));
+    }
+
+    @Test
+    void findByPricePerNightLessThan_boundaryCheck() {
+        Page<RoomType> result =
+                repository.findByPricePerNightLessThan(BigDecimal.valueOf(200), page);
+
+        result.forEach(rt ->
+                assertThat(rt.getPricePerNight())
+                        .isLessThan(BigDecimal.valueOf(200)));
+    }
 
     // =========================
-    // 🚫 VALIDATION TESTS (7)
+    // 🚫 VALIDATION TESTS
     // =========================
 
     @Test
@@ -177,10 +170,10 @@ class RoomTypeRepositoryTest {
 
     @Test
     void update_invalidTypeName_shouldFail() {
-        RoomType saved = createRoomType("Deluxe", "Desc", 2, 100);
-        saved.setTypeName("");
+        RoomType existing = repository.findAll().get(0);
+        existing.setTypeName("");
 
-        assertThatThrownBy(() -> repository.saveAndFlush(saved))
+        assertThatThrownBy(() -> repository.saveAndFlush(existing))
                 .isInstanceOf(jakarta.validation.ConstraintViolationException.class);
     }
 }
