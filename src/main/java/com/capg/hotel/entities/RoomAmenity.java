@@ -4,6 +4,7 @@ package com.capg.hotel.entities;
 import com.capg.hotel.dtos.RoomAmenityId;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "RoomAmenity")
@@ -11,15 +12,17 @@ public class RoomAmenity {
 
     @EmbeddedId
     private RoomAmenityId id;
-
+    @NotNull(message = "Composite ID cannot be null")
     @ManyToOne
     @MapsId("roomId")
     @JoinColumn(name = "room_id")
+    @NotNull(message = "Room cannot be null")
     private Room room;
 
     @ManyToOne
     @MapsId("amenityId")
     @JoinColumn(name = "amenity_id")
+    @NotNull(message = "Amenity cannot be null")
     private Amenity amenity;
 
 	public RoomAmenityId getId() {

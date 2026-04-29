@@ -12,4 +12,21 @@ public class HotelAmenityId implements Serializable {
 
     @Column(name = "amenity_id")
     private Integer amenityId;
+
+	public Integer getHotelId() {
+		return hotelId;
+	}
+
+	public void setHotelId(Integer hotelId) {
+		this.hotelId = hotelId;
+	}
+
+	public Integer getAmenityId() {
+		return amenityId;
+	}
+
+	public void setAmenityId(Integer amenityId) {
+		this.amenityId = amenityId;
+	}
+    
 }
