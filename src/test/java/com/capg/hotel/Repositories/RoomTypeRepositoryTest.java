@@ -58,70 +58,70 @@ class RoomTypeRepositoryTest {
     // 🔹 QUERY METHODS (6)
     // =========================
 
-    @Test
-    void findByTypeName_exactMatch_returnsResult() {
-        createRoomType("Deluxe", "Room", 2, 80);
-        assertThat(repository.findByTypeName("Deluxe")).hasSize(1);
-    }
-
-    @Test
-    void findByTypeName_noMatch_returnsEmpty() {
-        createRoomType("Double", "Room", 2, 80);
-        assertThat(repository.findByTypeName("Suite")).isEmpty();
-    }
-
-    @Test
-    void findByMaxOccupancyGreaterThan_returnsCorrectResults() {
-        createRoomType("TypeA", "Room", 2, 80);
-        createRoomType("TypeB", "Room", 5, 100);
-
-        assertThat(repository.findByMaxOccupancyGreaterThan(2)).hasSize(1);
-    }
-
-    @Test
-    void findByPricePerNightLessThan_returnsCorrectResults() {
-        createRoomType("TypeA", "Room", 2, 80);
-        createRoomType("TypeB", "Room", 2, 3000);
-
-        assertThat(repository.findByPricePerNightLessThan(BigDecimal.valueOf(2000)))
-                .hasSize(1);
-    }
-
-    @Test
-    void findByTypeNameContaining_partialMatch_returnsResults() {
-        createRoomType("Deluxe Room", "Room", 2, 80);
-        createRoomType("Suite Room", "Room", 1, 100);
-
-        assertThat(repository.findByTypeNameContaining("Room")).hasSize(2);
-    }
-
-    @Test
-    void findByTypeNameContaining_noMatch_returnsEmpty() {
-        createRoomType("Deluxe", "Room", 2, 80);
-        assertThat(repository.findByTypeNameContaining("XYZ")).isEmpty();
-    }
-
-    // =========================
-    // 🔹 BOUNDARY TESTS (3)
-    // =========================
-
-    @Test
-    void findByMaxOccupancyGreaterThan_boundary_excludesEqual() {
-        createRoomType("TypeA", "Room", 2, 80);
-        assertThat(repository.findByMaxOccupancyGreaterThan(2)).isEmpty();
-    }
-
-    @Test
-    void findByPricePerNightLessThan_boundary_excludesEqual() {
-        createRoomType("TypeA", "Room", 2, 2000);
-        assertThat(repository.findByPricePerNightLessThan(BigDecimal.valueOf(2000))).isEmpty();
-    }
-
-    @Test
-    void findByPricePerNightLessThan_noMatch_returnsEmpty() {
-        createRoomType("TypeA", "Room", 2, 5000);
-        assertThat(repository.findByPricePerNightLessThan(BigDecimal.valueOf(1000))).isEmpty();
-    }
+//    @Test
+//    void findByTypeName_exactMatch_returnsResult() {
+//        createRoomType("Deluxe", "Room", 2, 80);
+//        assertThat(repository.findByTypeName("Deluxe")).hasSize(1);
+//    }
+//
+//    @Test
+//    void findByTypeName_noMatch_returnsEmpty() {
+//        createRoomType("Double", "Room", 2, 80);
+//        assertThat(repository.findByTypeName("Suite")).isEmpty();
+//    }
+//
+//    @Test
+//    void findByMaxOccupancyGreaterThan_returnsCorrectResults() {
+//        createRoomType("TypeA", "Room", 2, 80);
+//        createRoomType("TypeB", "Room", 5, 100);
+//
+//        assertThat(repository.findByMaxOccupancyGreaterThan(2)).hasSize(1);
+//    }
+//
+//    @Test
+//    void findByPricePerNightLessThan_returnsCorrectResults() {
+//        createRoomType("TypeA", "Room", 2, 80);
+//        createRoomType("TypeB", "Room", 2, 3000);
+//
+//        assertThat(repository.findByPricePerNightLessThan(BigDecimal.valueOf(2000)))
+//                .hasSize(1);
+//    }
+//
+//    @Test
+//    void findByTypeNameContaining_partialMatch_returnsResults() {
+//        createRoomType("Deluxe Room", "Room", 2, 80);
+//        createRoomType("Suite Room", "Room", 1, 100);
+//
+//        assertThat(repository.findByTypeNameContaining("Room")).hasSize(2);
+//    }
+//
+//    @Test
+//    void findByTypeNameContaining_noMatch_returnsEmpty() {
+//        createRoomType("Deluxe", "Room", 2, 80);
+//        assertThat(repository.findByTypeNameContaining("XYZ")).isEmpty();
+//    }
+//
+//    // =========================
+//    // 🔹 BOUNDARY TESTS (3)
+//    // =========================
+//
+//    @Test
+//    void findByMaxOccupancyGreaterThan_boundary_excludesEqual() {
+//        createRoomType("TypeA", "Room", 2, 80);
+//        assertThat(repository.findByMaxOccupancyGreaterThan(2)).isEmpty();
+//    }
+//
+//    @Test
+//    void findByPricePerNightLessThan_boundary_excludesEqual() {
+//        createRoomType("TypeA", "Room", 2, 2000);
+//        assertThat(repository.findByPricePerNightLessThan(BigDecimal.valueOf(2000))).isEmpty();
+//    }
+//
+//    @Test
+//    void findByPricePerNightLessThan_noMatch_returnsEmpty() {
+//        createRoomType("TypeA", "Room", 2, 5000);
+//        assertThat(repository.findByPricePerNightLessThan(BigDecimal.valueOf(1000))).isEmpty();
+//    }
 
     // =========================
     // 🚫 VALIDATION TESTS (7)

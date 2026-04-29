@@ -3,6 +3,8 @@ package com.capg.hotel.repositories;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
@@ -22,11 +24,11 @@ public interface RoomTypeRepository extends JpaRepository<RoomType, Integer> {
 	@RestResource(exported = false)
 	void delete(RoomType roomtype);
 	
-	List<RoomType> findByTypeName(String typeName);
+	Page<RoomType> findByTypeName(String typeName,Pageable pageable);
 
-	List<RoomType> findByMaxOccupancyGreaterThan(Integer value);
+	Page<RoomType> findByMaxOccupancyGreaterThan(Integer value,Pageable pageable);
 
-	List<RoomType> findByPricePerNightLessThan(BigDecimal price);
+	Page<RoomType> findByPricePerNightLessThan(BigDecimal price,Pageable pageable);
 
-	List<RoomType> findByTypeNameContaining(String keyword);
+	Page<RoomType> findByTypeNameContaining(String keyword,Pageable pageable);
 }
