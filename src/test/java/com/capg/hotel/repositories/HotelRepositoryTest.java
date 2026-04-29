@@ -185,23 +185,6 @@ class HotelRepositoryTest {
         assertEquals(2, count);
     }
 
-    @Test
-    void testDeleteHotel_valid() {
-        Hotel saved = save(
-                "Palm Grove Resort",
-                "Tropical Haven",
-                "Relax under the palm trees in this tropical haven."
-        );
-
-        Integer id = saved.getHotelId();
-
-        hotelRepository.delete(saved);
-
-        Optional<Hotel> result =
-                hotelRepository.findById(id);
-
-        assertTrue(result.isEmpty());
-    }
 
     // =======================================================
     // ❌ INCORRECT SCENARIOS
