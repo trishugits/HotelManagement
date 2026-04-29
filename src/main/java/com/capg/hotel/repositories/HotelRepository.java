@@ -1,10 +1,13 @@
 package com.capg.hotel.repositories;
 
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import com.capg.hotel.entities.Hotel;
 import com.capg.hotel.projections.HotelProjections;
+import org.springframework.data.domain.*;
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +24,6 @@ public interface HotelRepository extends JpaRepository<Hotel, Integer> {
     @RestResource(exported = false)
     void delete(Hotel hotel);
 
-    Optional<Hotel> findByName(String name);
-    List<Hotel> findByLocation(String location);
+    Page<Hotel> findByName(String name,Pageable pageable);
+    Page<Hotel> findByLocation(String location ,Pageable pageable);
 }

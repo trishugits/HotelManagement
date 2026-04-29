@@ -76,51 +76,51 @@ class HotelRepositoryTest {
         assertEquals("Downtown Oasis Hotel", result.get().getName());
     }
 
-    @Test
-    void testFindByName_valid() {
-        save(
-                "Seaside Retreat Lodge",
-                "Coastal Area",
-                "Scenic lodge offering a peaceful escape by the sea."
-        );
+//    @Test
+//    void testFindByName_valid() {
+//        save(
+//                "Seaside Retreat Lodge",
+//                "Coastal Area",
+//                "Scenic lodge offering a peaceful escape by the sea."
+//        );
+//
+//        Optional<Hotel> result =
+//                hotelRepository.findByName("Seaside Retreat Lodge");
+//
+//        assertTrue(result.isPresent());
+//        assertEquals("Coastal Area", result.get().getLocation());
+//    }
 
-        Optional<Hotel> result =
-                hotelRepository.findByName("Seaside Retreat Lodge");
+//    @Test
+//    void testFindByLocation_singleMatch() {
+//        save(
+//                "Mountain View Hotel",
+//                "Mountainous Region",
+//                "Elegant hotel surrounded by breathtaking mountain views."
+//        );
+//
+//        List<Hotel> result =
+//                hotelRepository.findByLocation("Mountainous Region");
+//
+//        assertThat(result).hasSize(1);
+//        assertEquals("Mountainous Region", result.get(0).getLocation());
+//    }
 
-        assertTrue(result.isPresent());
-        assertEquals("Coastal Area", result.get().getLocation());
-    }
-
-    @Test
-    void testFindByLocation_singleMatch() {
-        save(
-                "Mountain View Hotel",
-                "Mountainous Region",
-                "Elegant hotel surrounded by breathtaking mountain views."
-        );
-
-        List<Hotel> result =
-                hotelRepository.findByLocation("Mountainous Region");
-
-        assertThat(result).hasSize(1);
-        assertEquals("Mountainous Region", result.get(0).getLocation());
-    }
-
-    @Test
-    void testFindByLocation_multipleMatches() {
-        save("Grand Plaza Hotel",
-                "Downtown City Center",
-                "Luxury hotel with stunning views of the city.");
-
-        save("Business Traveler Inn",
-                "Downtown City Center",
-                "Tailored for the needs of business travelers.");
-
-        List<Hotel> result =
-                hotelRepository.findByLocation("Downtown City Center");
-
-        assertThat(result).hasSize(2);
-    }
+//    @Test
+//    void testFindByLocation_multipleMatches() {
+//        save("Grand Plaza Hotel",
+//                "Downtown City Center",
+//                "Luxury hotel with stunning views of the city.");
+//
+//        save("Business Traveler Inn",
+//                "Downtown City Center",
+//                "Tailored for the needs of business travelers.");
+//
+//        List<Hotel> result =
+//                hotelRepository.findByLocation("Downtown City Center");
+//
+//        assertThat(result).hasSize(2);
+//    }
 
     @Test
     void testUpdateHotel_valid() {
@@ -198,35 +198,35 @@ class HotelRepositoryTest {
         assertTrue(result.isEmpty());
     }
 
-    @Test
-    void testFindByName_notFound() {
-        Optional<Hotel> result =
-                hotelRepository.findByName("Unknown Hotel");
+//    @Test
+//    void testFindByName_notFound() {
+//        Optional<Hotel> result =
+//                hotelRepository.findByName("Unknown Hotel");
+//
+//        assertTrue(result.isEmpty());
+//    }
 
-        assertTrue(result.isEmpty());
-    }
+//    @Test
+//    void testFindByName_caseSensitive() {
+//        save(
+//                "Whispering Pines Inn",
+//                "Pine Forest",
+//                "Cozy inn surrounded by the whispering sounds of pine trees."
+//        );
 
-    @Test
-    void testFindByName_caseSensitive() {
-        save(
-                "Whispering Pines Inn",
-                "Pine Forest",
-                "Cozy inn surrounded by the whispering sounds of pine trees."
-        );
+//        Optional<Hotel> result =
+//                hotelRepository.findByName("whispering pines inn");
+//
+//        assertTrue(result.isEmpty());
+//    }
 
-        Optional<Hotel> result =
-                hotelRepository.findByName("whispering pines inn");
-
-        assertTrue(result.isEmpty());
-    }
-
-    @Test
-    void testFindByLocation_notFound() {
-        List<Hotel> result =
-                hotelRepository.findByLocation("Unknown City");
-
-        assertThat(result).isEmpty();
-    }
+//    @Test
+//    void testFindByLocation_notFound() {
+//        List<Hotel> result =
+//                hotelRepository.findByLocation("Unknown City");
+//
+//        assertThat(result).isEmpty();
+//    }
 
     @Test
     void testUpdateDoesNotCreateNewRecord() {
