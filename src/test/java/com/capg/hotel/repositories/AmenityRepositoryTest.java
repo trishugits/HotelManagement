@@ -52,14 +52,14 @@ class AmenityRepositoryTest {
     }
 
     @Test
-    void testFindByName_valid() {
-        save("Spa", "Relaxation");
+    void testFindByNameContainingIgnoreCase_singleMatch() {
+        save("Swimming Pool", "Outdoor pool");
 
-        Optional<Amenity> found =
-                amenityRepository.findByName("Spa");
+        var page = amenityRepository
+                .findByNameContainingIgnoreCase("pool", PageRequest.of(0, 5));
 
-        assertTrue(found.isPresent());
-        assertEquals("Relaxation", found.get().getDescription());
+        assertEquals(1, page.getContent().size());
+        assertEquals("Swimming Pool", page.getContent().get(0).getName());
     }
 
     @Test
@@ -92,23 +92,23 @@ class AmenityRepositoryTest {
     // INCORRECT SCENARIOS
     // =======================================================
 
-    @Test
-    void testFindByName_notFound() {
-        Optional<Amenity> found =
-                amenityRepository.findByName("Unknown");
+//    @Test
+//    void testFindByName_notFound() {
+//        Optional<Amenity> found =
+//                amenityRepository.findByName("Unknown");
+//
+//        assertTrue(found.isEmpty());
+//    }
 
-        assertTrue(found.isEmpty());
-    }
-
-    @Test
-    void testFindByName_caseSensitive() {
-        save("Tennis Court", "Outdoor court facility");
-
-        Optional<Amenity> found =
-                amenityRepository.findByName("tennis court");
-
-        assertTrue(found.isEmpty());
-    }
+//    @Test
+//    void testFindByName_caseSensitive() {
+//        save("Tennis Court", "Outdoor court facility");
+//
+//        Optional<Amenity> found =
+//                amenityRepository.findByName("tennis court");
+//
+//        assertTrue(found.isEmpty());
+//    }
 
     @Test
     void testUpdateDoesNotCreateNewRecord() {

@@ -1,7 +1,7 @@
 package com.capg.hotel.repositories;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
@@ -15,6 +15,6 @@ import com.capg.hotel.projections.AmenityHotelsProjection;
         excerptProjection = AmenityHotelsProjection.class
 )
 interface HotelAmenityRepository extends JpaRepository<HotelAmenity,HotelAmenityId> {
-    List<HotelAmenity> findByAmenityAmenityId(Integer amenityId);
-    List<HotelAmenity> findByHotelHotelId(Integer hotelId);
+    Page<HotelAmenity> findByAmenityAmenityId(Integer amenityId, Pageable pageable);
+    Page<HotelAmenity> findByHotelHotelId(Integer hotelId, Pageable pageable);
 }
