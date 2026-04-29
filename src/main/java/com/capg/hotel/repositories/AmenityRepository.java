@@ -17,5 +17,5 @@ public interface AmenityRepository extends JpaRepository<Amenity,Integer> {
 	void deleteById(int id);
 	@RestResource(exported=false)
 	void delete(Amenity amenity);
-	Optional<Amenity> findByName(int id);
+	Optional<Amenity> findByName(String name);
 }
