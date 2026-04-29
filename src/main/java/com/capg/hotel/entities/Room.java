@@ -71,8 +71,7 @@ public class Room {
 		this.hotel = hotel;
 	}
 
-	public Room(Integer roomId, Integer roomNumber, Boolean isAvailable, RoomType roomType) {
-		super();
+	public Room(Integer roomId, Integer roomNumber, Boolean isAvailable, RoomType roomType,Hotel hotel) {
 		this.roomId = roomId;
 		this.roomNumber = roomNumber;
 		this.isAvailable = isAvailable;
