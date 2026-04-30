@@ -89,13 +89,14 @@ class AmenityRepositoryTest {
     //update and add tests
     @Test
     void shouldSaveAmenity() {
-        long before = amenityRepository.count();
-
         Amenity a = new Amenity(null, "Test Amenity", "Valid description here");
+
         Amenity saved = amenityRepository.saveAndFlush(a);
 
         assertNotNull(saved.getAmenityId());
-        assertEquals(before + 1, amenityRepository.count());
+
+        Optional<Amenity> found = amenityRepository.findById(saved.getAmenityId());
+        assertTrue(found.isPresent());
     }
 
     @Test
@@ -103,14 +104,16 @@ class AmenityRepositoryTest {
         Amenity a = new Amenity(null, "Temp Name", "Valid description");
         a = amenityRepository.saveAndFlush(a);
 
+        Integer id = a.getAmenityId();
+
         a.setName("Updated Name");
         a.setDescription("Updated description");
 
         amenityRepository.saveAndFlush(a);
 
-        Amenity updated = amenityRepository.findById(a.getAmenityId())
-                .orElseThrow();
+        Amenity updated = amenityRepository.findById(id).orElseThrow();
 
+        assertEquals(id, updated.getAmenityId());
         assertEquals("Updated Name", updated.getName());
     }
 
@@ -119,14 +122,14 @@ class AmenityRepositoryTest {
         Amenity a = new Amenity(null, "Temp", "Valid description");
         a = amenityRepository.saveAndFlush(a);
 
-        long before = amenityRepository.count();
+        Integer idBefore = a.getAmenityId();
 
         a.setName("Updated Temp");
-        amenityRepository.saveAndFlush(a);
+        Amenity updated = amenityRepository.saveAndFlush(a);
 
-        long after = amenityRepository.count();
+        Integer idAfter = updated.getAmenityId();
 
-        assertEquals(before, after);
+        assertEquals(idBefore, idAfter);
     }
 
     //invalid cases

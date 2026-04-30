@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @RepositoryRestResource(
         path = "reservations",
@@ -24,5 +23,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     Page<Reservation> findByCheckInDate(LocalDate checkInDate, Pageable pageable);
 
     Page<Reservation> findByCheckOutDate(LocalDate checkOutDate, Pageable pageable);
+
     Page<Reservation> findByRoom_RoomId(Integer roomId, Pageable pageable);
 }
