@@ -7,9 +7,6 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import com.capg.hotel.entities.Hotel;
 import com.capg.hotel.projections.HotelProjections;
 import org.springframework.data.domain.*;
-import java.awt.print.Pageable;
-import java.util.List;
-import java.util.Optional;
 
 @RepositoryRestResource(
         path = "hotels",

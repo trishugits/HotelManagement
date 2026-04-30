@@ -1,6 +1,9 @@
 package com.capg.hotel.repositories;
 
 import com.capg.hotel.entities.Reservation;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
@@ -12,16 +15,14 @@ import java.util.List;
         collectionResourceRel = "reservations"
 )
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
+    Page<Reservation> findByGuestName(String guestName, Pageable pageable);
 
-    List<Reservation> findByGuestName(String guestName);
+    Page<Reservation> findByGuestPhone(String guestPhone, Pageable pageable);
 
-    List<Reservation> findByGuestPhone(String guestPhone);
+    Page<Reservation> findByGuestEmail(String guestEmail, Pageable pageable);
 
-    List<Reservation> findByGuestEmail(String guestEmail);
+    Page<Reservation> findByCheckInDate(LocalDate checkInDate, Pageable pageable);
 
-    List<Reservation> findByCheckInDate(LocalDate checkInDate);
-
-    List<Reservation> findByCheckOutDate(LocalDate checkOutDate);
-
-    List<Reservation> findByRoom_RoomId(Integer roomId);
+    Page<Reservation> findByCheckOutDate(LocalDate checkOutDate, Pageable pageable);
+    Page<Reservation> findByRoom_RoomId(Integer roomId, Pageable pageable);
 }
