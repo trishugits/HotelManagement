@@ -31,7 +31,8 @@ class RoomTypeAPITest {
         mockMvc.perform(get(BASE_URL)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$._embedded.roomtypes").exists());
+                .andExpect(jsonPath("$.content").exists())
+                .andExpect(jsonPath("$.content").isArray());
     }
 
     @Test
@@ -90,7 +91,7 @@ class RoomTypeAPITest {
         mockMvc.perform(put(BASE_URL + "/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -104,7 +105,7 @@ class RoomTypeAPITest {
         mockMvc.perform(patch(BASE_URL + "/1")
                         .contentType("application/merge-patch+json")
                         .content(json))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test

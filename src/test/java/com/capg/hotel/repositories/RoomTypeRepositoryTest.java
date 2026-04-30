@@ -45,7 +45,7 @@ class RoomTypeRepositoryTest {
     @Test
     void findByTypeName_existing_returnsResults() {
         Page<RoomType> result =
-                repository.findByTypeName("Single", page);
+                repository.findByTypeNameContaining("Single", page);
 
         assertThat(result.getContent()).isNotEmpty();
     }
