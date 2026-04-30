@@ -117,23 +117,33 @@ class HotelRepositoryTest {
     }
 
     @Test
-    void testCountHotels_valid() {
-        // Save 2 new hotels and verify count increases by exactly 2
-        long countBefore = hotelRepository.count();
+    void testUpdateHotelcount_valid() {
+        Hotel saved = save(
+                "Urban Skyline Suites",
+                "Metropolitan Area",
+                "Chic suites with panoramic views of the city skyline."
+        );
 
-        save("Test Count Hotel One",
-                "Test Location One",
-                "Valid description for count test one.");
+        Integer id = saved.getHotelId();
 
-        save("Test Count Hotel Two",
-                "Test Location Two",
-                "Valid description for count test two.");
+        // Update fields
+        saved.setName("Updated Skyline Suites");
+        saved.setLocation("Luxury Skyline");
+        saved.setDescription("Updated premium skyline suites.");
 
-        long countAfter = hotelRepository.count();
+        hotelRepository.saveAndFlush(saved);
 
-        assertEquals(countBefore + 2, countAfter);
+        // Verify using findById
+        Hotel updated = hotelRepository
+                .findById(id)
+                .orElseThrow();
+
+        assertEquals(id, updated.getHotelId()); // same record
+        assertEquals("Updated Skyline Suites", updated.getName());
+        assertEquals("Luxury Skyline", updated.getLocation());
+        assertEquals("Updated premium skyline suites.", updated.getDescription());
     }
-
+    
     @Test
     void testFindByName_valid() {
         // "Seaside Retreat Lodge" exists in real DB (hotelId 4, 14, 24)
@@ -238,14 +248,21 @@ class HotelRepositoryTest {
                 "Enjoy scenic harbor views in this waterfront hotel."
         );
 
-        long countBefore = hotelRepository.count();
+        Integer id = saved.getHotelId();
 
+        // Update existing entity
         saved.setName("Updated Harbor View Hotel");
         hotelRepository.saveAndFlush(saved);
 
-        long countAfter = hotelRepository.count();
+        // Fetch again using findById
+        Optional<Hotel> result = hotelRepository.findById(id);
 
-        assertEquals(countBefore, countAfter);
+        assertTrue(result.isPresent());
+        assertEquals(id, result.get().getHotelId()); // ensures same record
+        assertEquals("Updated Harbor View Hotel", result.get().getName());
+
+        // Extra safety: ensure other fields unchanged
+        assertEquals("Harborfront District", result.get().getLocation());
     }
 
     // =======================================================
