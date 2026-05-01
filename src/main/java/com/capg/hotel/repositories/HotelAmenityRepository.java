@@ -17,6 +17,8 @@ import com.capg.hotel.projections.AmenityHotelsProjection;
 )
 interface HotelAmenityRepository extends JpaRepository<HotelAmenity,HotelAmenityId> {
 	@EntityGraph(attributePaths = {"hotel", "amenity"})
+	Page<HotelAmenity> findAll(Pageable pageable);
+	@EntityGraph(attributePaths = {"hotel", "amenity"})
     Page<HotelAmenity> findByAmenityAmenityId(Integer amenityId, Pageable pageable);
 	@EntityGraph(attributePaths = {"hotel", "amenity"})
     Page<HotelAmenity> findByHotelHotelId(Integer hotelId, Pageable pageable);

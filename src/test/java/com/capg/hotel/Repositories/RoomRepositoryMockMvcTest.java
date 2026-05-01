@@ -1,4 +1,4 @@
-package com.capg.hotel.Repositories;
+package com.capg.hotel.repositories;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

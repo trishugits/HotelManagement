@@ -28,7 +28,10 @@ class RoomRepositoryTest {
 
     @Test
     void findById_existingId_returnsEntity() {
-        Room any = repository.findAll().get(0);
+        Room any = repository.findAll(PageRequest.of(0, 1))
+                             .getContent()
+                             .get(0);
+
         assertThat(repository.findById(any.getRoomId())).isPresent();
     }
 
@@ -43,7 +46,10 @@ class RoomRepositoryTest {
 
     @Test
     void findByRoomTypeId_existing_returnsResults() {
-        Room any = repository.findAll().get(0);
+        Room any = repository.findAll(PageRequest.of(0, 1))
+                             .getContent()
+                             .get(0);
+
         Integer roomTypeId = any.getRoomType().getRoomTypeId();
 
         Page<Room> result =
@@ -62,7 +68,10 @@ class RoomRepositoryTest {
 
     @Test
     void findByRoomTypeId_allResultsMatchRoomTypeId() {
-        Room any = repository.findAll().get(0);
+        Room any = repository.findAll(PageRequest.of(0, 1))
+                             .getContent()
+                             .get(0);
+
         Integer roomTypeId = any.getRoomType().getRoomTypeId();
 
         Page<Room> result =
@@ -116,7 +125,9 @@ class RoomRepositoryTest {
 
     @Test
     void findByRoomTypeId_paginationSecondPage_returnsCorrectPage() {
-        Room any = repository.findAll().get(0);
+    	Room any = repository.findAll(PageRequest.of(0, 1))
+                .getContent()
+                .get(0);
         Integer roomTypeId = any.getRoomType().getRoomTypeId();
 
         PageRequest secondPage = PageRequest.of(1, 1);
